@@ -1,0 +1,598 @@
+{
+	"info": {
+		"_postman_id": "db567458-0ce6-4d79-9f94-2c11b0e720ac",
+		"name": "Epam API Trello Homework_1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Board",
+			"item": [
+				{
+					"name": "Create Board",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"board_id\", jsonData.id);\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify board is created\", function () {\r",
+									"    pm.expect(response.name).to.eql(pm.environment.get(\"board_name\"));\r",
+									"    pm.expect(response.closed).to.equal(false);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify board is private\", function () {\r",
+									"    pm.expect(response.prefs.permissionLevel).to.eql(\"private\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/boards/?name={{board_name}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"boards",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{board_name}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify board is created\", function () {\r",
+									"    pm.expect(response.name).to.eql(pm.environment.get(\"board_newName\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/boards/:id?name={{board_newName}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"boards",
+								":id"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{board_newName}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{board_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify board name\", function () {\r",
+									"    pm.expect(response.name).to.eql(pm.environment.get(\"board_newName\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify board id\", function () {\r",
+									"    pm.expect(response.id).to.eql(pm.environment.get(\"board_id\"))\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/boards/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"boards",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{board_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "List",
+			"item": [
+				{
+					"name": "Create List TODO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"list_id\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Verify List Config\", function () {\r",
+									"    pm.expect(response.name).to.eql(pm.environment.get(\"list_name\"));\r",
+									"    pm.expect(response.closed).to.eql(false);\r",
+									"    pm.expect(response.idBoard).to.eql(pm.environment.get(\"board_id\"));\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/lists?name={{list_name}}&idBoard={{board_id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"lists"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{list_name}}"
+								},
+								{
+									"key": "idBoard",
+									"value": "{{board_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Close List TODO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/lists/:id/?closed=true",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"lists",
+								":id",
+								""
+							],
+							"query": [
+								{
+									"key": "closed",
+									"value": "true"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{list_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List TODO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Verify List is closed\", function () {\r",
+									"    pm.expect(response.closed).to.eql(true);\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/lists/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"lists",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{list_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Open List TODO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Verify that is the same list\", function () {\r",
+									"    pm.expect(response.closed).to.eql(false);\r",
+									"    pm.expect(response.name).to.eql(pm.environment.get(\"list_name\"));\r",
+									"    pm.expect(response.id).to.eql(pm.environment.get(\"list_id\"))\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/lists/:id/?closed=false",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"lists",
+								":id",
+								""
+							],
+							"query": [
+								{
+									"key": "closed",
+									"value": "false"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{list_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Card",
+			"item": [
+				{
+					"name": "Create Card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"card_id\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/cards/?idList={{list_id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"",
+								"cards",
+								""
+							],
+							"query": [
+								{
+									"key": "idList",
+									"value": "{{list_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add description Card",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/cards/:id/?desc={{description}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"cards",
+								":id",
+								""
+							],
+							"query": [
+								{
+									"key": "desc",
+									"value": "{{description}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{card_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete board",
+			"item": [
+				{
+					"name": "Delete board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(response._value).to.eql(null);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/boards/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"boards",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{board_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check Board deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify board is deleted\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"The requested resource was not found.\");\r",
+									"});\r",
+									"\r",
+									"pm.environment.unset(\"board_id\");\r",
+									"pm.environment.unset(\"board_name\");\r",
+									"pm.environment.unset(\"list_id\");\r",
+									"pm.environment.unset(\"card_id\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/boards/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"boards",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{board_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth1",
+		"oauth1": [
+			{
+				"key": "tokenSecret",
+				"value": "{{secret}}",
+				"type": "string"
+			},
+			{
+				"key": "token",
+				"value": "{{apiToken}}",
+				"type": "string"
+			},
+			{
+				"key": "consumerSecret",
+				"value": "{{secret}}",
+				"type": "string"
+			},
+			{
+				"key": "consumerKey",
+				"value": "{{key}}",
+				"type": "string"
+			},
+			{
+				"key": "addParamsToHeader",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "signatureMethod",
+				"value": "HMAC-SHA1",
+				"type": "string"
+			},
+			{
+				"key": "version",
+				"value": "1.0",
+				"type": "string"
+			},
+			{
+				"key": "addEmptyParamsToSign",
+				"value": false,
+				"type": "boolean"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
