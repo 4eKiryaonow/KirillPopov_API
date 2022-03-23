@@ -121,14 +121,7 @@
   <profile>
     <id>Second Homework API</id>
     <properties>
-      <testng.suite.file>${testng.configs.path}/</testng.suite.file>
-    </properties>
-  </profile>
-
-  <profile>
-    <id>Third Homework API</id>
-    <properties>
-      <testng.suite.file>${testng.configs.path}/</testng.suite.file>
+      <testng.suite.file>${testng.configs.path}/SecondHomework.xml</testng.suite.file>
     </properties>
   </profile>
   </profiles>

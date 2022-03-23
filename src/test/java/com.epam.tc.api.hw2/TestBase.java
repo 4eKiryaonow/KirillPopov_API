@@ -6,6 +6,7 @@ import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 
 public class TestBase {
@@ -13,7 +14,7 @@ public class TestBase {
     protected static RequestSpecification reqSpec;
     protected static ResponseSpecification respSpec;
 
-    @BeforeSuite
+    @BeforeClass(alwaysRun = true)
     public void setUp() {
 
         reqSpec = new RequestSpecBuilder()

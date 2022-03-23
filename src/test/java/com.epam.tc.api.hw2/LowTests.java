@@ -1,11 +1,13 @@
 package com.epam.tc.api.hw2;
 
+import static org.hamcrest.Matchers.equalTo;
+
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
-import static org.hamcrest.Matchers.*;
+
 
 public class LowTests extends TestBase {
 
