@@ -7,18 +7,12 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
-
-
 public class LowTests extends TestBase {
 
-    public static String boardId;
-    public static String listId;
-    public static String cardId;
-
-    @Test(priority = 1)
+    @Test
     public void createBoard() {
 
-        Response response = RestAssured
+        RestAssured
             .given()
             .spec(reqSpec)
             .queryParam("name", TestData.BOARD_NAME)
@@ -28,49 +22,45 @@ public class LowTests extends TestBase {
             .assertThat()
             .spec(respSpec)
             .body("name", equalTo(TestData.BOARD_NAME))
-            .body("closed", equalTo(false))
-            .extract().response();
-
-        JsonPath jsonPath = response.jsonPath();
-        boardId = jsonPath.getString("id");
+            .body("closed", equalTo(false));
     }
 
-    @Test(priority = 2)
+    @Test
     public void changeNameOfBoard() {
 
         RestAssured.given()
                    .spec(reqSpec)
                    .queryParam("name", TestData.BOARD_NEW_NAME)
                    .when()
-                   .put(EndPoints.BOARDS + boardId)
+                   .put(EndPoints.BOARDS + TestData.BOARD_ID)
                    .then()
                    .assertThat()
                    .spec(respSpec)
                    .body("name", equalTo(TestData.BOARD_NEW_NAME));
     }
 
-    @Test(priority = 3)
+    @Test
     public void getBoard() {
 
         RestAssured
             .given()
             .spec(reqSpec)
             .when()
-            .get(EndPoints.BOARDS + boardId)
+            .get(EndPoints.BOARDS + TestData.BOARD_ID)
             .then()
             .assertThat()
             .spec(respSpec)
             .body("name", equalTo(TestData.BOARD_NEW_NAME));
     }
 
-    @Test(priority = 4)
+    @Test
     public void createList() {
 
         Response response = RestAssured
             .given()
             .spec(reqSpec)
             .queryParam("name", TestData.LIST_NAME)
-            .queryParam("idBoard", boardId)
+            .queryParam("idBoard", TestData.BOARD_ID)
             .when()
             .post(EndPoints.LISTS)
             .then()
@@ -79,12 +69,9 @@ public class LowTests extends TestBase {
             .body("name", equalTo(TestData.LIST_NAME))
             .extract()
             .response();
-
-        JsonPath jsonPath = response.jsonPath();
-        listId = jsonPath.getString("id");
     }
 
-    @Test(priority = 5)
+    @Test
     public void closeList() {
 
         RestAssured
@@ -92,7 +79,7 @@ public class LowTests extends TestBase {
             .spec(reqSpec)
             .queryParam("closed", "true")
             .when()
-            .put(EndPoints.LISTS + listId)
+            .put(EndPoints.LISTS + TestData.LIST_ID)
             .then()
             .assertThat()
             .spec(respSpec)
@@ -100,13 +87,13 @@ public class LowTests extends TestBase {
             .body("closed", equalTo(true));
     }
 
-    @Test(priority = 6)
+    @Test
     public void getClosedList() {
 
         RestAssured
             .given()
             .spec(reqSpec)
-            .get(EndPoints.LISTS + listId)
+            .get(EndPoints.LISTS + TestData.LIST_ID)
             .then()
             .assertThat()
             .spec(respSpec)
@@ -114,7 +101,7 @@ public class LowTests extends TestBase {
             .body("closed", equalTo(true));
     }
 
-    @Test(priority = 7)
+    @Test
     public void openClosedList() {
 
         RestAssured
@@ -122,7 +109,7 @@ public class LowTests extends TestBase {
             .spec(reqSpec)
             .queryParam("closed", "false")
             .when()
-            .put(EndPoints.LISTS + listId)
+            .put(EndPoints.LISTS + TestData.LIST_ID)
             .then()
             .assertThat()
             .spec(respSpec)
@@ -130,26 +117,21 @@ public class LowTests extends TestBase {
             .body("closed", equalTo(false));
     }
 
-    @Test(priority = 8)
+    @Test
     public void createCard() {
 
-        Response response = RestAssured
+        RestAssured
             .given()
             .spec(reqSpec)
-            .queryParam("idList", listId)
+            .queryParam("idList", TestData.LIST_ID)
             .when()
             .post(EndPoints.CARDS)
             .then()
             .assertThat()
-            .spec(respSpec)
-            .extract()
-            .response();
-
-        JsonPath jsonPath = response.jsonPath();
-        cardId = jsonPath.getString("id");
+            .spec(respSpec);
     }
 
-    @Test(priority = 9)
+    @Test
     public void addDescriptionToCard() throws InterruptedException {
 
         RestAssured
@@ -157,22 +139,22 @@ public class LowTests extends TestBase {
             .spec(reqSpec)
             .queryParam("desc", TestData.CARD_DESCRIPTION)
             .when()
-            .put(EndPoints.CARDS + cardId)
+            .put(EndPoints.CARDS + TestData.CARD_ID)
             .then()
             .assertThat()
             .spec(respSpec)
             .body("desc", equalTo(TestData.CARD_DESCRIPTION));
-
     }
 
-    @Test(priority = 10)
-    public void deleteBoard() {
+    @Test
+    public void createChecklist() {
 
         RestAssured
             .given()
             .spec(reqSpec)
+            .queryParam("idCard", TestData.CARD_ID)
             .when()
-            .delete(EndPoints.BOARDS + boardId)
+            .post(EndPoints.CHECKLISTS)
             .then()
             .assertThat()
             .spec(respSpec);
