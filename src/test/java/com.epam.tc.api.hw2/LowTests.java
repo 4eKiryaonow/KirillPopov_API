@@ -15,13 +15,13 @@ public class LowTests extends TestBase {
         RestAssured
             .given()
             .spec(reqSpec)
-            .queryParam("name", TestData.BOARD_NAME)
+            .queryParam("name", TestData.SECOND_BOARD_NAME)
             .when()
             .post(EndPoints.BOARDS)
             .then()
             .assertThat()
             .spec(respSpec)
-            .body("name", equalTo(TestData.BOARD_NAME))
+            .body("name", equalTo(TestData.SECOND_BOARD_NAME))
             .body("closed", equalTo(false));
     }
 
@@ -30,13 +30,13 @@ public class LowTests extends TestBase {
 
         RestAssured.given()
                    .spec(reqSpec)
-                   .queryParam("name", TestData.BOARD_NEW_NAME)
+                   .queryParam("name", TestData.NEW_FIRST_BOARD_NAME)
                    .when()
-                   .put(EndPoints.BOARDS + TestData.BOARD_ID)
+                   .put(EndPoints.BOARDS + BOARD_ID)
                    .then()
                    .assertThat()
                    .spec(respSpec)
-                   .body("name", equalTo(TestData.BOARD_NEW_NAME));
+                   .body("name", equalTo(TestData.NEW_FIRST_BOARD_NAME));
     }
 
     @Test
@@ -46,29 +46,27 @@ public class LowTests extends TestBase {
             .given()
             .spec(reqSpec)
             .when()
-            .get(EndPoints.BOARDS + TestData.BOARD_ID)
+            .get(EndPoints.BOARDS + BOARD_ID)
             .then()
             .assertThat()
             .spec(respSpec)
-            .body("name", equalTo(TestData.BOARD_NEW_NAME));
+            .body("name", equalTo(TestData.NEW_FIRST_BOARD_NAME));
     }
 
     @Test
     public void createList() {
 
-        Response response = RestAssured
+        RestAssured
             .given()
             .spec(reqSpec)
-            .queryParam("name", TestData.LIST_NAME)
-            .queryParam("idBoard", TestData.BOARD_ID)
+            .queryParam("name", TestData.SECOND_LIST_NAME)
+            .queryParam("idBoard", BOARD_ID)
             .when()
             .post(EndPoints.LISTS)
             .then()
             .assertThat()
             .spec(respSpec)
-            .body("name", equalTo(TestData.LIST_NAME))
-            .extract()
-            .response();
+            .body("name", equalTo(TestData.SECOND_LIST_NAME));
     }
 
     @Test
@@ -79,11 +77,11 @@ public class LowTests extends TestBase {
             .spec(reqSpec)
             .queryParam("closed", "true")
             .when()
-            .put(EndPoints.LISTS + TestData.LIST_ID)
+            .put(EndPoints.LISTS + LIST_ID)
             .then()
             .assertThat()
             .spec(respSpec)
-            .body("name", equalTo(TestData.LIST_NAME))
+            .body("name", equalTo(TestData.FIRST_LIST_NAME))
             .body("closed", equalTo(true));
     }
 
@@ -93,11 +91,11 @@ public class LowTests extends TestBase {
         RestAssured
             .given()
             .spec(reqSpec)
-            .get(EndPoints.LISTS + TestData.LIST_ID)
+            .get(EndPoints.LISTS + LIST_ID)
             .then()
             .assertThat()
             .spec(respSpec)
-            .body("name", equalTo(TestData.LIST_NAME))
+            .body("name", equalTo(TestData.FIRST_LIST_NAME))
             .body("closed", equalTo(true));
     }
 
@@ -109,11 +107,11 @@ public class LowTests extends TestBase {
             .spec(reqSpec)
             .queryParam("closed", "false")
             .when()
-            .put(EndPoints.LISTS + TestData.LIST_ID)
+            .put(EndPoints.LISTS + LIST_ID)
             .then()
             .assertThat()
             .spec(respSpec)
-            .body("name", equalTo(TestData.LIST_NAME))
+            .body("name", equalTo(TestData.FIRST_LIST_NAME))
             .body("closed", equalTo(false));
     }
 
@@ -123,7 +121,7 @@ public class LowTests extends TestBase {
         RestAssured
             .given()
             .spec(reqSpec)
-            .queryParam("idList", TestData.LIST_ID)
+            .queryParam("idList", LIST_ID)
             .when()
             .post(EndPoints.CARDS)
             .then()
@@ -132,14 +130,14 @@ public class LowTests extends TestBase {
     }
 
     @Test
-    public void addDescriptionToCard() throws InterruptedException {
+    public void addDescriptionToCard() {
 
         RestAssured
             .given()
             .spec(reqSpec)
             .queryParam("desc", TestData.CARD_DESCRIPTION)
             .when()
-            .put(EndPoints.CARDS + TestData.CARD_ID)
+            .put(EndPoints.CARDS + CARD_ID)
             .then()
             .assertThat()
             .spec(respSpec)
@@ -152,7 +150,7 @@ public class LowTests extends TestBase {
         RestAssured
             .given()
             .spec(reqSpec)
-            .queryParam("idCard", TestData.CARD_ID)
+            .queryParam("idCard", CARD_ID)
             .when()
             .post(EndPoints.CHECKLISTS)
             .then()
