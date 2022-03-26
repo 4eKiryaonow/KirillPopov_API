@@ -1,4 +1,4 @@
-package com.epam.tc.api.hw3.service;
+package com.epam.tc.api.hw3.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
