@@ -2,7 +2,8 @@ package com.epam.tc.api.hw3.service;
 
 import static io.restassured.RestAssured.given;
 
-import com.epam.tc.api.hw3.utils.TestData;
+import com.epam.tc.api.hw3.utils.EndPoints;
+import com.epam.tc.api.hw3.utils.PropertiesReader;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.Response;
@@ -11,16 +12,23 @@ import java.util.Map;
 
 public class CommonService {
 
+    public static final String KEY = PropertiesReader.getProperty("key");
+    public static final String TOKEN = PropertiesReader.getProperty("token");
     private RequestSpecification requestSpecification;
 
     public CommonService() {
 
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         requestSpecification = new RequestSpecBuilder()
-            .setBaseUri(TestData.BASE_URL)
-            .addQueryParam("key", TestData.KEY)
-            .addQueryParam("token", TestData.TOKEN)
+            .setBaseUri(EndPoints.BASE_URL)
+            .addQueryParam("key", KEY)
+            .addQueryParam("token", TOKEN)
             .build();
+    }
+
+    public CommonService getNewInstanceCommonResponse() {
+
+        return new CommonService();
     }
 
     public Response postWithParams(String uri, Map<String, String> params) {

@@ -19,8 +19,12 @@ public class RestBoardService extends CommonService {
 
     public BoardDTO getBoard(String boardId) {
 
-        return getNoParams(String.format(GET_BOARD, boardId))
-            .getBody().as(BoardDTO.class);
+        return getBoardResponse(boardId).getBody().as(BoardDTO.class);
+    }
+
+    public Response getBoardResponse(String boardId) {
+
+        return getNoParams(String.format(GET_BOARD, boardId));
     }
 
     public Response deleteBoard(String boardId) {
@@ -33,6 +37,7 @@ public class RestBoardService extends CommonService {
         Map<String, String> params = new HashMap<>();
         params.put("name", newBoardName);
 
-        return new CommonService().putWithParams(String.format(GET_BOARD, boardId), params).as(BoardDTO.class);
+        return getNewInstanceCommonResponse()
+            .putWithParams(String.format(GET_BOARD, boardId), params).as(BoardDTO.class);
     }
 }

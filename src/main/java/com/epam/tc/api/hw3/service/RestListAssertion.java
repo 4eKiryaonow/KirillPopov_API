@@ -11,7 +11,7 @@ public class RestListAssertion {
 
         Assertions
             .assertThat(listDTO.getIdBoard())
-            .as("Invalid id")
+            .as("Invalid Board id parameter in List")
             .isEqualTo(boardDTO.getId());
     }
 
@@ -19,7 +19,7 @@ public class RestListAssertion {
 
         Assertions
             .assertThat(listDTO.getName())
-            .as(String.format("The List name actual: %s \n The Board name is expected: %s",
+            .as(String.format("The List name actual: %s \n The List name is expected: %s",
                 listDTO.getName(), listName))
             .isEqualTo(listName);
     }

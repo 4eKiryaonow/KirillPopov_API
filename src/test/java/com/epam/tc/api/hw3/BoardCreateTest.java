@@ -1,17 +1,17 @@
 package com.epam.tc.api.hw3;
 
+import static com.epam.tc.api.hw3.TestData.BOARD_NAME;
+
 import org.testng.annotations.Test;
 
 public class BoardCreateTest extends BaseTest {
 
-    @Test(dataProvider = "boardName", dataProviderClass = TestData.class)
-    public void checkCreationOfBoard(String name) {
+    @Test
+    public void checkCreationOfBoard() {
 
-        boardDTO = restBoardService.createBoard(name);
+        boardDTO = restBoardService.createBoard(BOARD_NAME);
         boardDTO = restBoardService.getBoard(boardDTO.getId());
-        restBoardAssertion.assertBoardName(boardDTO, name);
+        restBoardAssertion.assertBoardName(boardDTO, BOARD_NAME);
         restBoardAssertion.assertBoardId(boardDTO);
     }
-
-
 }
