@@ -37,7 +37,6 @@ public class RestBoardService extends CommonService {
         Map<String, String> params = new HashMap<>();
         params.put("name", newBoardName);
 
-        return getNewInstanceCommonResponse()
-            .putWithParams(String.format(GET_BOARD, boardId), params).as(BoardDTO.class);
+        return putWithParams(String.format(GET_BOARD, boardId), params).as(BoardDTO.class);
     }
 }

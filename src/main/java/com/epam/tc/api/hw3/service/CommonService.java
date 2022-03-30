@@ -16,7 +16,7 @@ public class CommonService {
     public static final String TOKEN = PropertiesReader.getProperty("token");
     private RequestSpecification requestSpecification;
 
-    public CommonService() {
+    public RequestSpecification getRequestSpecification() {
 
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         requestSpecification = new RequestSpecBuilder()
@@ -24,53 +24,53 @@ public class CommonService {
             .addQueryParam("key", KEY)
             .addQueryParam("token", TOKEN)
             .build();
-    }
 
-    public CommonService getNewInstanceCommonResponse() {
-
-        return new CommonService();
+        return requestSpecification;
     }
 
     public Response postWithParams(String uri, Map<String, String> params) {
 
-        requestSpecification = given(requestSpecification)
+        requestSpecification = given(getRequestSpecification())
             .contentType("application/json; charset=utf-8")
             .accept("application/json");
         for (Map.Entry<String, String> param : params.entrySet()) {
             requestSpecification.queryParam(param.getKey(), param.getValue());
         }
+
         return requestSpecification.post(uri);
     }
 
     public Response getNoParams(String uri) {
 
-        return given(requestSpecification)
+        return given(getRequestSpecification())
             .get(uri);
     }
 
     public Response deleteNoParams(String uri) {
 
-        return RestAssured.given(requestSpecification)
+        return RestAssured.given(getRequestSpecification())
                           .delete(uri);
     }
 
     public Response getWithParams(String uri, Map<String, Object> params) {
 
-        RequestSpecification specification = given(requestSpecification);
+        RequestSpecification specification = given(getRequestSpecification());
         for (Map.Entry<String, Object> param : params.entrySet()) {
             specification.param(param.getKey(), param.getValue());
         }
+
         return specification.get(uri);
     }
 
     public Response putWithParams(String uri, Map<String, String> params) {
 
-        requestSpecification = given(requestSpecification)
+        requestSpecification = given(getRequestSpecification())
             .contentType("application/json; charset=utf-8")
             .accept("application/json");
         for (Map.Entry<String, String> param : params.entrySet()) {
             requestSpecification.queryParam(param.getKey(), param.getValue());
         }
+
         return requestSpecification.put(uri).then().extract().response();
     }
 }
