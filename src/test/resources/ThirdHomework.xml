@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Third API Homework">
+  <test name="REST Assured functional test">
+    <packages>
+      <package name="com.epam.tc.api.hw3.*"/>
+    </packages>
+
+  </test>
+</suite>
